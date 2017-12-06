@@ -1,18 +1,26 @@
 <template>
-  <div>
+  <div class="wrapper">
     <h1>Preferences</h1>
-    <p>{{mes}}</p>
-    <router-link to="/">Go to Home</router-link>
   </div>
 </template>
 
 <script>
-export default {
-  name: "preferences-page",
-  data() {
-    return {
-      mes: "233",
-    };
-  },
-};
+  export default {
+    name: "preferences-page",
+    data() {
+      return {
+      };
+    },
+  };
 </script>
+
+<style lang="scss" scoped>
+  $bg-color: #262b33;
+
+  .wrapper {
+    background-color: $bg-color;
+    color: #666;
+    width: 100%;
+    flex: 1;
+  }
+</style>
