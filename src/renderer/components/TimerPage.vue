@@ -38,11 +38,18 @@
         this.scores.push(score);
       },
       deleteScoreAt(index) {
-        const prompt = `Are you sure to DELETE this score?`;
-        // HACK: Need replacing by native dialog of OS
-        if (confirm(prompt)) {
-          this.scores.splice(index, 1);
-        }
+        const message = `Are you sure to DELETE this score?`;
+        const buttons = ['Confirm', 'Cancel'];
+        this.$electron.remote.dialog.showMessageBox({
+          type: 'question',
+          message,
+          buttons,
+        }, (buttonIndex) => {
+          if (buttonIndex === 0) {
+            // TODO: need dispatch ACTION
+            this.scores.splice(index, 1);
+          }
+        });
       },
     },
   };
