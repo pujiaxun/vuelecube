@@ -2,9 +2,9 @@
   <div class="score-wrapper">
     <h4>SessionScores</h4>
     <ul>
-      <li v-for="(score, index) in scores" :key="index">
-        {{score | scoreFormater}}
-        <span @click="onDeleteScore(index)">X</span>
+      <li v-for="score in scores" :key="score._id">
+        {{score.ms | scoreFormater}}
+        <span @click="onDeleteScore(score._id)">X</span>
       </li>
     </ul>
   </div>
@@ -16,11 +16,6 @@
     props: {
       scores: Array,
       onDeleteScore: Function,
-    },
-    data() {
-      return {
-
-      };
     },
     filters: {
       scoreFormater(ms) {

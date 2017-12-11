@@ -2,22 +2,23 @@
   <div class="timer-wrapper">
     <div class="left-wrapper">
       <stop-watch
-        :on-done="appendScores"
+        :on-done="addNewScore"
       />
       <session-stats
-        :scores="copyScores()"
+        :scores="scores"
       />
     </div>
     <div class="right-wrapper">
       <session-scores
-        :scores="copyScores()"
-        :on-delete-score="deleteScoreAt"
+        :scores="scores"
+        :on-delete-score="deleteScoreHandler"
       />
     </div>
   </div>
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
   import StopWatch from './TimerPage/StopWatch';
   import SessionStats from './TimerPage/SessionStats';
   import SessionScores from './TimerPage/SessionScores';
@@ -25,19 +26,19 @@
   export default {
     name: "timer-page",
     components: { StopWatch, SessionStats, SessionScores },
-    data() {
-      return {
-        scores: [],
-      };
+    computed: mapGetters({
+      scores: 'allScores',
+    }),
+    created() {
+      this.getCurrentScores();
     },
     methods: {
-      copyScores() {
-        return [...this.scores];
-      },
-      appendScores(score) {
-        this.scores.push(score);
-      },
-      deleteScoreAt(index) {
+      ...mapActions([
+        'getCurrentScores',
+        'addNewScore',
+        'deleteScore',
+      ]),
+      deleteScoreHandler(_id) {
         const message = `Are you sure to DELETE this score?`;
         const buttons = ['Confirm', 'Cancel'];
         this.$electron.remote.dialog.showMessageBox({
@@ -46,8 +47,7 @@
           buttons,
         }, (buttonIndex) => {
           if (buttonIndex === 0) {
-            // TODO: need dispatch ACTION
-            this.scores.splice(index, 1);
+            this.deleteScore({ _id });
           }
         });
       },

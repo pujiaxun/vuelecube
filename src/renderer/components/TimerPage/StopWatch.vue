@@ -44,7 +44,7 @@
           } else if (this.timingStatus === 'TIMING') {
             this.theStopwatch.stop();
             this.timingStatus = 'READY';
-            this.onDone(this.ms);
+            this.onDone({ ms: this.ms, pop: false, dnf: false });
           }
         }
       },
