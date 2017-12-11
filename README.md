@@ -1,4 +1,4 @@
-# vuelecube
+# Vuelecube
 
 > A timer for cube based on electron-vue
 
