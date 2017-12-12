@@ -1,5 +1,7 @@
 # CHANGELOG
 
+[阅读中文版](./CHANGELOG_zh-CN.md)
+
 ## 0.0.2
 
 1. Add icons.
