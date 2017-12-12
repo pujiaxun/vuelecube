@@ -58,7 +58,7 @@ const actions = {
           scores,
           created_at: new Date(),
         }, () => {
-          db.remove({ table: SCORES_TABLE_NAME }, () => {
+          db.remove({ table: SCORES_TABLE_NAME }, { multi: true }, () => {
             commit('ARCHIVE_SESSION_FROM_SCORES');
           });
         });
