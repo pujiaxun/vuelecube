@@ -5,11 +5,20 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
+
   export default {
     name: "stats-page",
-    data() {
-      return {
-      };
+    computed: mapGetters({
+      sessions: 'allSessions',
+    }),
+    methods: {
+      ...mapActions([
+        'getSessions',
+      ]),
+    },
+    created() {
+      this.getSessions();
     },
   };
 </script>
