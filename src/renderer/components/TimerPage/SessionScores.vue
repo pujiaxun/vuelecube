@@ -7,6 +7,8 @@
         <span @click="onDeleteScore(score._id)">X</span>
       </li>
     </ul>
+    <div v-if="scores.length >= 3" class="archive-btn" @click="onArchiveSession">Archive Session</div>
+    <div v-if="scores.length >= 3">We suggest you archive a session every 5 or 12 scores.</div>
   </div>
 </template>
 
@@ -16,6 +18,7 @@
     props: {
       scores: Array,
       onDeleteScore: Function,
+      onArchiveSession: Function,
     },
     filters: {
       scoreFormater(ms) {
@@ -28,5 +31,15 @@
 <style lang='scss' scoped>
   .score-wrapper {
     border: 1px dashed red;
+  }
+
+  .archive-btn {
+    border: 1px dashed #aaa;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      border: 1px solid #aaa;
+    }
   }
 </style>

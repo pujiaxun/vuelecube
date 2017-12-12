@@ -12,6 +12,7 @@
       <session-scores
         :scores="scores"
         :on-delete-score="deleteScoreHandler"
+        :on-archive-session="archiveSessionHandler"
       />
     </div>
   </div>
@@ -37,6 +38,7 @@
         'getCurrentScores',
         'addNewScore',
         'deleteScore',
+        'archiveSession',
       ]),
       deleteScoreHandler(_id) {
         const message = `Are you sure to DELETE this score?`;
@@ -48,6 +50,21 @@
         }, (buttonIndex) => {
           if (buttonIndex === 0) {
             this.deleteScore({ _id });
+          }
+        });
+      },
+      // TODO: support different cube types
+      // TODO: support auto archiving
+      archiveSessionHandler() {
+        const message = `Are you sure to ARCHIVE this session?`;
+        const buttons = ['Confirm', 'Cancel'];
+        this.$electron.remote.dialog.showMessageBox({
+          type: 'question',
+          message,
+          buttons,
+        }, (buttonIndex) => {
+          if (buttonIndex === 0) {
+            this.archiveSession();
           }
         });
       },
