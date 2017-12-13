@@ -30,6 +30,6 @@
     background-color: $bg-color;
     color: #666;
     width: 100%;
-    flex: 1;
+    height: 100vh;
   }
 </style>

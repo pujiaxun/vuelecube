@@ -87,7 +87,7 @@
     background-color: $bg-color;
     color: $font-color;
     width: 100%;
-    flex: 1;
+    height: 100vh;
     display: flex;
   }
 

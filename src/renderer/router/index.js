@@ -26,13 +26,13 @@ export default new Router({
       component: require('@/components/PreferencesPage').default,
     },
     {
-      path: '/',
+      path: '/landing-page',
       name: 'landing-page',
       component: require('@/components/LandingPage').default,
     },
     {
       path: '*',
-      redirect: '/',
+      redirect: '/timer',
     },
   ],
 });

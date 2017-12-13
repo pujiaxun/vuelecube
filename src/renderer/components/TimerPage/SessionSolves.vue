@@ -7,7 +7,11 @@
         <span @click="onDeleteSolve(solve._id)">X</span>
       </li>
     </ul>
-    <div v-if="solves.length >= 3" class="archive-btn" @click="onArchiveSession">Archive Session</div>
+    <Button
+      v-if="solves.length >= 3"
+      type="success"
+      long
+      @click="onArchiveSession">Archive Session</Button>
     <div v-if="solves.length >= 3">We suggest you archive a session every 5 or 12 solves.</div>
   </div>
 </template>
