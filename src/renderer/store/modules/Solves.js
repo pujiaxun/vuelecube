@@ -3,33 +3,60 @@ import db from '../../datastore';
 
 const state = {
   solves: [],
+  cubeType: '',
 };
 
 const mutations = {
   ADD_NEW_SOLVE(state, { solve }) {
     state.solves.push(solve);
   },
-  GET_CURRENT_SOLVES(state, { solves }) {
+  SET_CURRENT_SOLVES(state, { solves }) {
     state.solves = solves;
   },
   REMOVE_SOLVE(state, { _id }) {
     /* eslint-disable no-underscore-dangle */
     state.solves = state.solves.filter(s => s._id !== _id);
   },
-  ARCHIVE_SESSION_FROM_SOLVES(state) {
+  CLEAR_SOLVES(state) {
     state.solves = [];
+  },
+  UPDATE_CUBE_TYPE(state, { type }) {
+    state.cubeType = type;
   },
 };
 
 const SOLVES_TABLE_NAME = 'solves';
 const SESSIONS_TABLE_NAME = 'sessions';
+const CONFIGS_TABLE_NAME = 'configs';
+const DEFAULT_CUBE_TYPE = '333';
 
 const actions = {
+  getCurrentCubeType({ commit }) {
+    db.findOne({
+      table: CONFIGS_TABLE_NAME,
+      name: 'cubeType',
+    }, (_, config) => {
+      const type = config ? config.value : DEFAULT_CUBE_TYPE;
+      commit('UPDATE_CUBE_TYPE', { type });
+    });
+  },
+  updateCubeType({ commit }, { type }) {
+    db.update({
+      table: CONFIGS_TABLE_NAME,
+      name: 'cubeType',
+    }, {
+      table: CONFIGS_TABLE_NAME,
+      name: 'cubeType',
+      value: type,
+    }, { upsert: true }, () => {
+      commit('UPDATE_CUBE_TYPE', { type });
+    });
+  },
   getCurrentSolves({ commit }) {
     db.find({ table: SOLVES_TABLE_NAME })
       .sort({ created_at: 1 })
       .exec((__, solves) => {
-        commit('GET_CURRENT_SOLVES', { solves });
+        commit('SET_CURRENT_SOLVES', { solves });
       });
   },
   addNewSolve({ commit }, { ms, dnf, pop }) {
@@ -48,26 +75,24 @@ const actions = {
       commit('REMOVE_SOLVE', { _id });
     });
   },
-  archiveSession({ commit }) {
-    db.find({ table: SOLVES_TABLE_NAME })
-      .sort({ created_at: 1 })
-      .exec((__, originSolves) => {
-        const solves = originSolves.map(({ ms, dnf, pop }) => ({ ms, dnf, pop }));
-        db.insert({
-          table: SESSIONS_TABLE_NAME,
-          solves,
-          created_at: new Date(),
-        }, () => {
-          db.remove({ table: SOLVES_TABLE_NAME }, { multi: true }, () => {
-            commit('ARCHIVE_SESSION_FROM_SOLVES');
-          });
-        });
+  archiveSession({ commit, state }) {
+    const solves = state.solves.map(({ ms, dnf, pop }) => ({ ms, dnf, pop }));
+    db.insert({
+      table: SESSIONS_TABLE_NAME,
+      solves,
+      cube_type: state.cubeType,
+      created_at: new Date(),
+    }, () => {
+      db.remove({ table: SOLVES_TABLE_NAME }, { multi: true }, () => {
+        commit('CLEAR_SOLVES');
       });
+    });
   },
 };
 
 const getters = {
   allSolves: state => state.solves,
+  currentCubeType: state => state.cubeType,
 };
 
 export default {

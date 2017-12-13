@@ -1,6 +1,7 @@
 <template>
   <div class="timer-wrapper">
     <div class="left-wrapper">
+      <session-settings />
       <stop-watch
         :on-done="addNewSolve"
       />
@@ -23,15 +24,18 @@
   import StopWatch from './TimerPage/StopWatch';
   import SessionStats from './TimerPage/SessionStats';
   import SessionSolves from './TimerPage/SessionSolves';
+  import SessionSettings from './TimerPage/SessionSettings';
 
   export default {
     name: "timer-page",
-    components: { StopWatch, SessionStats, SessionSolves },
+    components: { StopWatch, SessionStats, SessionSolves, SessionSettings },
     computed: mapGetters({
       solves: 'allSolves',
+      cubeType: 'currentCubeType',
     }),
     created() {
       this.getCurrentSolves();
+      this.getCurrentCubeType();
     },
     methods: {
       ...mapActions([
@@ -39,6 +43,8 @@
         'addNewSolve',
         'deleteSolve',
         'archiveSession',
+        'getCurrentCubeType',
+        'updateCubeType',
       ]),
       deleteSolveHandler(_id) {
         const message = `Are you sure to DELETE this solve?`;
