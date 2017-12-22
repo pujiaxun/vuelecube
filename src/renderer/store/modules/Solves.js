@@ -1,11 +1,11 @@
 /**
  * Solve schema:
  *
- * table: String, database table name
- * ms: Number, milliseconds cost of this solve
- * dnf: Boolean, did not finish
- * pop: Boolean, pop out
- * created_at: Date, when the solve has done
+ * table: {String} database table name
+ * ms: {Number} milliseconds cost of this solve
+ * dnf: {Boolean} did not finish
+ * pop: {Boolean} pop out
+ * created_at: {Date} when the solve has done
  */
 
 import db from '../../datastore';
@@ -42,12 +42,13 @@ const actions = {
         commit('SET_CURRENT_SOLVES', { solves });
       });
   },
-  addNewSolve({ commit }, { ms, dnf, pop }) {
+  addNewSolve({ commit }, { ms, dnf, pop, scramble }) {
     db.insert({
       table: SOLVES_TABLE_NAME,
       ms,
       dnf,
       pop,
+      scramble,
       created_at: new Date(),
     }, (err, solve) => {
       commit('ADD_NEW_SOLVE', { solve });

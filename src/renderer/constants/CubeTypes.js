@@ -1,4 +1,9 @@
-const CUBE_TYPES = {
+export const CUBE_TYPES = [
+  '222', '333', '444', '555', '666', '777',
+  'clock', 'minx', 'pyram', 'sq1', 'skewb',
+];
+
+export const CUBE_TYPES_MAP = {
   222: '2X2X2',
   333: '3X3X3',
   444: '4X4X4',
@@ -11,5 +16,3 @@ const CUBE_TYPES = {
   sq1: 'SQ1', // SQ1
   skewb: 'Skewb', // Skewb
 };
-
-export default CUBE_TYPES;

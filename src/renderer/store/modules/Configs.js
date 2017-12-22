@@ -1,9 +1,9 @@
 /**
  * Config schema:
  *
- * table: String, database table name
- * name: String, the config's key name
- * value: String|Number|Boolean, value of the configuration
+ * table: {String} database table name
+ * name: {String} the config's key name
+ * value: {String|Number|Boolean} value of the configuration
  */
 
 import db from '../../datastore';

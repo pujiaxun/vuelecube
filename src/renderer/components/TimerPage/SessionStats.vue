@@ -8,14 +8,15 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   import utils from '../../utils';
 
   export default {
     name: 'session-stats',
-    props: {
-      solves: Array,
-    },
     computed: {
+      ...mapGetters({
+        solves: 'allSolves',
+      }),
       pb() {
         return utils.pb(this.solves);
       },

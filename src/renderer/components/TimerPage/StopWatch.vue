@@ -7,14 +7,15 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
   import StopWatch from 'timer-stopwatch';
 
   export default {
     name: "stop-watch",
-    props: {
-      onDone: Function,
-      configs: Object,
-    },
+    computed: mapGetters({
+      scramble: 'currentScramble',
+      configs: 'allConfigs',
+    }),
     data() {
       return {
         timingStatus: 'READY',
@@ -31,10 +32,15 @@
       });
     },
     methods: {
+      ...mapActions([
+        'addNewSolve',
+        'updateScramble',
+      ]),
       keyupHandler(e) {
         // READY -> HOLDING(>=n seconds) -> FIRE -> TIMING -> READY
         // READY -> HOLDING(<n seconds) -> READY
         const FIRE_KEY_CODE = this.configs.fireKeyCode;
+        const { cubeType, needScramble } = this.configs;
         if (e.keyCode === FIRE_KEY_CODE) {
           if (this.timingStatus === 'FIRE') {
             this.theStopwatch.reset();
@@ -46,7 +52,13 @@
           } else if (this.timingStatus === 'TIMING') {
             this.theStopwatch.stop();
             this.timingStatus = 'READY';
-            this.onDone({ ms: this.ms, pop: false, dnf: false });
+            this.addNewSolve({
+              ms: this.ms,
+              pop: false,
+              dnf: false,
+              scramble: needScramble ? this.scramble : '',
+            });
+            this.updateScramble({ cubeType });
           }
         }
       },

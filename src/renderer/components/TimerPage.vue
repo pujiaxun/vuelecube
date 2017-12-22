@@ -2,20 +2,11 @@
   <div class="timer-wrapper">
     <div class="left-wrapper">
       <session-settings />
-      <stop-watch
-        :on-done="addNewSolve"
-        :configs="configs"
-      />
-      <session-stats
-        :solves="solves"
-      />
+      <stop-watch />
+      <session-stats/>
     </div>
     <div class="right-wrapper">
-      <session-solves
-        :solves="solves"
-        :on-delete-solve="deleteSolveHandler"
-        :on-archive-session="archiveSessionHandler"
-      />
+      <session-solves />
     </div>
   </div>
 </template>
@@ -41,38 +32,8 @@
     methods: {
       ...mapActions([
         'getCurrentSolves',
-        'addNewSolve',
-        'deleteSolve',
-        'archiveSession',
         'getConfigs',
       ]),
-      deleteSolveHandler(_id) {
-        const message = `Are you sure to DELETE this solve?`;
-        const buttons = ['Confirm', 'Cancel'];
-        this.$electron.remote.dialog.showMessageBox({
-          type: 'question',
-          message,
-          buttons,
-        }, (buttonIndex) => {
-          if (buttonIndex === 0) {
-            this.deleteSolve({ _id });
-          }
-        });
-      },
-      // TODO: support auto archiving
-      archiveSessionHandler() {
-        const message = `Are you sure to ARCHIVE this session?`;
-        const buttons = ['Confirm', 'Cancel'];
-        this.$electron.remote.dialog.showMessageBox({
-          type: 'question',
-          message,
-          buttons,
-        }, (buttonIndex) => {
-          if (buttonIndex === 0) {
-            this.archiveSession({ cubeType: this.configs.cubeType });
-          }
-        });
-      },
     },
   };
 </script>

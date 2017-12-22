@@ -1,10 +1,10 @@
 /**
  * Session schema:
  *
- * table: String, database table name
- * solves: Array, a list of solves
- * cube_type: String, type of the cube in this session
- * created_at: Date, when the session has done
+ * table: {String} database table name
+ * solves: {Array} a list of solves
+ * cube_type: {String} type of the cube in this session
+ * created_at: {Date} when the session has done
  */
 
 import db from '../../datastore';
@@ -14,7 +14,7 @@ const state = {
 };
 
 const mutations = {
-  GET_ALL_SESSIONS(state, { sessions }) {
+  SET_SESSIONS(state, { sessions }) {
     state.sessions = sessions;
   },
 };
@@ -26,7 +26,7 @@ const actions = {
     db.find({ table: SESSIONS_TABLE_NAME })
       .sort({ created_at: 1 })
       .exec((__, sessions) => {
-        commit('GET_ALL_SESSIONS', { sessions });
+        commit('SET_SESSIONS', { sessions });
       });
   },
 };
