@@ -3,7 +3,7 @@
     <h4>SessionSolves</h4>
     <ul>
       <li v-for="solve in solves" :key="solve._id">
-        {{solve.ms | solveFormater}}
+        {{solve.ms | ms2second}}
         <span @click="onDeleteSolve(solve._id)">X</span>
       </li>
     </ul>
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+  import utils from '../../utils';
+
   export default {
     name: 'session-solves',
     props: {
@@ -25,9 +27,7 @@
       onArchiveSession: Function,
     },
     filters: {
-      solveFormater(ms) {
-        return (ms / 1000).toFixed(2);
-      },
+      ms2second: utils.ms2second,
     },
   };
 </script>
