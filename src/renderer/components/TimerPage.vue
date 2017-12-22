@@ -4,6 +4,7 @@
       <session-settings />
       <stop-watch
         :on-done="addNewSolve"
+        :configs="configs"
       />
       <session-stats
         :solves="solves"
@@ -31,11 +32,11 @@
     components: { StopWatch, SessionStats, SessionSolves, SessionSettings },
     computed: mapGetters({
       solves: 'allSolves',
-      cubeType: 'currentCubeType',
+      configs: 'allConfigs',
     }),
     created() {
       this.getCurrentSolves();
-      this.getCurrentCubeType();
+      this.getConfigs();
     },
     methods: {
       ...mapActions([
@@ -43,8 +44,7 @@
         'addNewSolve',
         'deleteSolve',
         'archiveSession',
-        'getCurrentCubeType',
-        'updateCubeType',
+        'getConfigs',
       ]),
       deleteSolveHandler(_id) {
         const message = `Are you sure to DELETE this solve?`;
@@ -59,7 +59,6 @@
           }
         });
       },
-      // TODO: support different cube types
       // TODO: support auto archiving
       archiveSessionHandler() {
         const message = `Are you sure to ARCHIVE this session?`;
@@ -70,7 +69,7 @@
           buttons,
         }, (buttonIndex) => {
           if (buttonIndex === 0) {
-            this.archiveSession();
+            this.archiveSession({ cubeType: this.configs.cubeType });
           }
         });
       },

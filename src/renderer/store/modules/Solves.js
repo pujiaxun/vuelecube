@@ -1,9 +1,18 @@
+/**
+ * Solve schema:
+ *
+ * table: String, database table name
+ * ms: Number, milliseconds cost of this solve
+ * dnf: Boolean, did not finish
+ * pop: Boolean, pop out
+ * created_at: Date, when the solve has done
+ */
+
 import db from '../../datastore';
 // TODO: Add common handler for db error.
 
 const state = {
   solves: [],
-  cubeType: '',
 };
 
 const mutations = {
@@ -20,38 +29,12 @@ const mutations = {
   CLEAR_SOLVES(state) {
     state.solves = [];
   },
-  UPDATE_CUBE_TYPE(state, { type }) {
-    state.cubeType = type;
-  },
 };
 
 const SOLVES_TABLE_NAME = 'solves';
 const SESSIONS_TABLE_NAME = 'sessions';
-const CONFIGS_TABLE_NAME = 'configs';
-const DEFAULT_CUBE_TYPE = '333';
 
 const actions = {
-  getCurrentCubeType({ commit }) {
-    db.findOne({
-      table: CONFIGS_TABLE_NAME,
-      name: 'cubeType',
-    }, (_, config) => {
-      const type = config ? config.value : DEFAULT_CUBE_TYPE;
-      commit('UPDATE_CUBE_TYPE', { type });
-    });
-  },
-  updateCubeType({ commit }, { type }) {
-    db.update({
-      table: CONFIGS_TABLE_NAME,
-      name: 'cubeType',
-    }, {
-      table: CONFIGS_TABLE_NAME,
-      name: 'cubeType',
-      value: type,
-    }, { upsert: true }, () => {
-      commit('UPDATE_CUBE_TYPE', { type });
-    });
-  },
   getCurrentSolves({ commit }) {
     db.find({ table: SOLVES_TABLE_NAME })
       .sort({ created_at: 1 })
@@ -75,12 +58,12 @@ const actions = {
       commit('REMOVE_SOLVE', { _id });
     });
   },
-  archiveSession({ commit, state }) {
+  archiveSession({ commit, state }, { cubeType }) {
     const solves = state.solves.map(({ ms, dnf, pop }) => ({ ms, dnf, pop }));
     db.insert({
       table: SESSIONS_TABLE_NAME,
       solves,
-      cube_type: state.cubeType,
+      cube_type: cubeType,
       created_at: new Date(),
     }, () => {
       db.remove({ table: SOLVES_TABLE_NAME }, { multi: true }, () => {
@@ -92,7 +75,6 @@ const actions = {
 
 const getters = {
   allSolves: state => state.solves,
-  currentCubeType: state => state.cubeType,
 };
 
 export default {

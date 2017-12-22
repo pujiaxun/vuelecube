@@ -1,3 +1,12 @@
+/**
+ * Session schema:
+ *
+ * table: String, database table name
+ * solves: Array, a list of solves
+ * cube_type: String, type of the cube in this session
+ * created_at: Date, when the session has done
+ */
+
 import db from '../../datastore';
 
 const state = {

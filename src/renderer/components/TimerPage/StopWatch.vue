@@ -13,6 +13,7 @@
     name: "stop-watch",
     props: {
       onDone: Function,
+      configs: Object,
     },
     data() {
       return {
@@ -33,7 +34,8 @@
       keyupHandler(e) {
         // READY -> HOLDING(>=n seconds) -> FIRE -> TIMING -> READY
         // READY -> HOLDING(<n seconds) -> READY
-        if (e.keyCode === 32) {
+        const FIRE_KEY_CODE = this.configs.fireKeyCode;
+        if (e.keyCode === FIRE_KEY_CODE) {
           if (this.timingStatus === 'FIRE') {
             this.theStopwatch.reset();
             this.theStopwatch.start();
@@ -49,8 +51,9 @@
         }
       },
       keydownHandler(e) {
-        const HOLDING_TO_FIRE = 800;
-        if (e.keyCode === 32 && this.timingStatus === 'READY') {
+        const HOLDING_TO_FIRE = this.configs.startDelay;
+        const FIRE_KEY_CODE = this.configs.fireKeyCode;
+        if (e.keyCode === FIRE_KEY_CODE && this.timingStatus === 'READY') {
           this.timingStatus = 'HOLDING';
           this.statusTimeout = setTimeout(() => {
             this.timingStatus = 'FIRE';
