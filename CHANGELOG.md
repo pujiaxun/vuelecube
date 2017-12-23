@@ -2,6 +2,12 @@
 
 [阅读中文版](./CHANGELOG_zh-CN.md)
 
+## 0.1.1
+
+1. Support auto archive session.
+1. Support different cube types and scrambles.
+1. Remove buttons' focusing after being clicked.
+
 ## 0.1.0
 
 1. Import iView for Vue and refactor the layout.
