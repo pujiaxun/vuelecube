@@ -1,7 +1,7 @@
 <template>
   <div class="layout-menu">
     <Menu
-      theme="dark"
+      :theme="configs.themeStyle"
       :active-name="menus[0].name"
       :style="menuStyle"
       @on-select="onSelectHandler"
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+
   export default {
     data() {
       return {
@@ -33,6 +35,9 @@
       };
     },
     computed: {
+      ...mapGetters({
+        configs: 'allConfigs',
+      }),
       iconSize() {
         return this.isExpending ? 14 : 50;
       },
@@ -55,11 +60,13 @@
 </script>
 
 <style lang='scss' scoped>
+  $menu-logo-bg-color: rgba(255, 255, 255, 0.5);
+
   .layout-logo-left {
     width: 90%;
     height: 30px;
     line-height: 30px;
-    background: #5b6270;
+    background: $menu-logo-bg-color;
     border-radius: 3px;
     margin: 15px auto;
     cursor: pointer;
@@ -69,13 +76,13 @@
   .layout-menu {
     height: 100vh;
     user-select: none;
-    background: #464c5b;
   }
 
   .ivu-menu {
     transition: width 0.3s ease-in-out;
     white-space: nowrap;
     overflow: hidden;
+    height: 100vh;
   }
 
   .menu-icon-container {

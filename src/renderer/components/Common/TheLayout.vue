@@ -1,5 +1,5 @@
 <template>
-  <div class="layout">
+  <div class="layout" :class="configs.themeStyle + '-theme-layout'">
     <the-side-menu />
     <div class="layout-content">
       <transition name="fade" mode="out-in">
@@ -10,17 +10,27 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
   import TheSideMenu from "./TheSideMenu";
 
   export default {
     components: { TheSideMenu },
+    computed: mapGetters({
+      configs: 'allConfigs',
+    }),
+    created() {
+      this.getConfigs();
+    },
+    methods: {
+      ...mapActions([
+        'getConfigs',
+      ]),
+    },
   };
 </script>
 
 <style lang='scss' scoped>
-  $bg-color: #262b33;
   .layout {
-    background: $bg-color;
     position: relative;
     overflow: hidden;
     display: flex;

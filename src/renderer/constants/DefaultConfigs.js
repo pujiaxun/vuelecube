@@ -6,6 +6,7 @@ const DEFAULT_CONFIGS = {
   autoArchiveSessionThreshold: 12,
   needAutoArchiveHint: false,
   maxSolvesCount: 30,
+  themeStyle: 'dark',
 };
 
 export default DEFAULT_CONFIGS;

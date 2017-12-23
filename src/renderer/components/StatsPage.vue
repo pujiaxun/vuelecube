@@ -24,11 +24,7 @@
 </script>
 
 <style lang="scss" scoped>
-  $bg-color: #262b33;
-
   .wrapper {
-    background-color: $bg-color;
-    color: #666;
     width: 100%;
     height: 100vh;
   }

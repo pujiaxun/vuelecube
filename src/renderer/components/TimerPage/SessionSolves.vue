@@ -1,22 +1,30 @@
 <template>
   <div class="solve-wrapper">
-    <h4>SessionSolves</h4>
-    <ul>
-      <li v-for="solve in solves" :key="solve._id">
-        {{solve.ms | ms2second}}
-        <span @click="deleteSolveHandler(solve._id)">X</span>
-      </li>
-    </ul>
-    <Button
-      v-if="solves.length >= 3" type="success" long @click="archiveSessionHandler"
-    >
-      Archive Session
-    </Button>
-    <Button
-      v-if="solves.length > 0" type="warning" long @click="clearSessionHandler"
-    >
-      Reset Session
-    </Button>
+    <Card>
+      <p slot="title">
+        <Icon type="ribbon-b"></Icon>
+        Current Session
+      </p>
+      <div class="buttons-container">
+        <ButtonGroup shape="circle">
+          <Button :disabled="solves.length < 3"
+            type="primary"
+            @click="archiveSessionHandler"
+          >
+            Archive
+          </Button>
+          <Button :disabled="solves.length === 0" @click="clearSessionHandler">
+            Reset
+          </Button>
+        </ButtonGroup>
+      </div>
+      <ul>
+        <li v-for="solve in solves" :key="solve._id">
+          {{ solve.ms | ms2second }}
+          <span @click="deleteSolveHandler(solve._id)">X</span>
+        </li>
+      </ul>
+    </Card>
   </div>
 </template>
 
@@ -49,7 +57,6 @@
           }
         });
       },
-      // TODO: support auto archiving
       archiveSessionHandler(e) {
         e.target.blur();
         this.$electron.remote.dialog.showMessageBox({
@@ -109,17 +116,7 @@
 </script>
 
 <style lang='scss' scoped>
-  .solve-wrapper {
-    border: 1px dashed red;
-  }
-
-  .archive-btn {
-    border: 1px dashed #aaa;
+  .buttons-container {
     text-align: center;
-    cursor: pointer;
-
-    &:hover {
-      border: 1px solid #aaa;
-    }
   }
 </style>
