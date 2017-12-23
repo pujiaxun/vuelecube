@@ -77,6 +77,14 @@ const actions = {
       });
     });
   },
+  clearSession({ commit }, { cubeType }) {
+    db.remove({
+      table: SOLVES_TABLE_NAME,
+      cube_type: cubeType,
+    }, { multi: true }, () => {
+      commit('CLEAR_SOLVES');
+    });
+  },
 };
 
 const getters = {

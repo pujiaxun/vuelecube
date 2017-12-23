@@ -8,12 +8,15 @@
       </li>
     </ul>
     <Button
-      v-if="solves.length >= 3"
-      type="success"
-      shape="circle"
-      long
-      @click="archiveSessionHandler">Archive Session</Button>
-    <div v-if="solves.length >= 3">We suggest you archive a session every 5 or 12 solves.</div>
+      v-if="solves.length >= 3" type="success" long @click="archiveSessionHandler"
+    >
+      Archive Session
+    </Button>
+    <Button
+      v-if="solves.length > 0" type="warning" long @click="clearSessionHandler"
+    >
+      Reset Session
+    </Button>
   </div>
 </template>
 
@@ -33,14 +36,13 @@
       ...mapActions([
         'deleteSolve',
         'archiveSession',
+        'clearSession',
       ]),
       deleteSolveHandler(_id) {
-        const message = `Are you sure to DELETE this solve?`;
-        const buttons = ['Confirm', 'Cancel'];
         this.$electron.remote.dialog.showMessageBox({
           type: 'question',
-          message,
-          buttons,
+          message: 'Are you sure to delete this solve?',
+          buttons: ['Delete', 'Cancel'],
         }, (buttonIndex) => {
           if (buttonIndex === 0) {
             this.deleteSolve({ _id });
@@ -48,18 +50,56 @@
         });
       },
       // TODO: support auto archiving
-      archiveSessionHandler() {
-        const message = `Are you sure to ARCHIVE this session?`;
-        const buttons = ['Confirm', 'Cancel'];
+      archiveSessionHandler(e) {
+        e.target.blur();
         this.$electron.remote.dialog.showMessageBox({
           type: 'question',
-          message,
-          buttons,
+          message: 'Do you want to archive current session?',
+          buttons: ['Archive', 'Cancel'],
         }, (buttonIndex) => {
           if (buttonIndex === 0) {
-            this.archiveSession({ cubeType: this.configs.cubeType });
+            this.archivedWithNotice("Archive Success");
           }
         });
+      },
+      clearSessionHandler(e) {
+        e.target.blur();
+        this.$electron.remote.dialog.showMessageBox({
+          type: 'question',
+          message: 'Are you sure to empty current session?',
+          buttons: ['Empty', 'Cancel'],
+        }, (buttonIndex) => {
+          if (buttonIndex === 0) {
+            this.clearSession({ cubeType: this.configs.cubeType });
+          }
+        });
+      },
+      archivedWithNotice(title) {
+        this.archiveSession({ cubeType: this.configs.cubeType });
+        // FIXME: async with the dispatched action
+        this.$Notice.info({
+          title,
+          desc: 'The current session has been archived.',
+        });
+      },
+    },
+    watch: {
+      solves() {
+        const {
+          maxSolvesCount,
+          autoArchiveSessionThreshold,
+          needAutoArchiveHint,
+        } = this.configs;
+
+        if (this.solves.length >= maxSolvesCount) {
+          this.archivedWithNotice("Max Limit");
+        } else if (this.solves.length === autoArchiveSessionThreshold) {
+          if (needAutoArchiveHint) {
+            this.archiveSessionHandler();
+          } else {
+            this.archivedWithNotice("Auto Archived");
+          }
+        }
       },
     },
     filters: {

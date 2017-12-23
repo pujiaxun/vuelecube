@@ -6,6 +6,7 @@
         {{ CUBE_TYPES_MAP[t] }}
       </Option>
     </Select>
+
     <i-switch
       size="large"
       :value="configs.needScramble"
@@ -13,7 +14,12 @@
         <span slot="open">ON</span>
         <span slot="close">OFF</span>
     </i-switch>
-    <Button type="primary" v-show="configs.needScramble" @click="scrambleIt">Scramble</Button>
+
+    <Button
+      type="primary" v-show="configs.needScramble" @click="scrambleIt"
+    >
+      Scramble
+    </Button>
     <p v-show="configs.needScramble">{{scramble}}</p>
   </div>
 </template>
@@ -48,7 +54,8 @@
       scrambleSwitcherHandler(needScramble) {
         this.updateConfig({ name: 'needScramble', value: needScramble });
       },
-      scrambleIt() {
+      scrambleIt(e) {
+        e.target.blur();
         this.updateScramble({ cubeType: this.configs.cubeType });
       },
     },
