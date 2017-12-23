@@ -2,7 +2,7 @@
   <div class="layout-menu">
     <Menu
       :theme="configs.themeStyle"
-      :active-name="menus[0].name"
+      :active-name="$router.currentRoute.name"
       :style="menuStyle"
       @on-select="onSelectHandler"
     >

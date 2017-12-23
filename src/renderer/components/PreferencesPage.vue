@@ -1,12 +1,17 @@
 <template>
-  <div class="wrapper">
-    <h1>Preferences</h1>
+  <div class="pref-wrapper">
+    <about-me />
+    <prefs-list />
   </div>
 </template>
 
 <script>
+  import AboutMe from './PreferencesPage/AboutMe';
+  import PrefsList from './PreferencesPage/PrefsList';
+
   export default {
     name: "preferences-page",
+    components: { AboutMe, PrefsList },
     data() {
       return {
       };
@@ -15,8 +20,8 @@
 </script>
 
 <style lang="scss" scoped>
-  .wrapper {
+  .pref-wrapper {
+    padding: 10px 30px;
     width: 100%;
-    height: 100vh;
   }
 </style>

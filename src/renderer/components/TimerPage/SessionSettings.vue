@@ -55,7 +55,7 @@
         this.updateConfig({ name: 'needScramble', value: needScramble });
       },
       scrambleIt(e) {
-        e.target.blur();
+        e && e.target.blur();
         this.updateScramble({ cubeType: this.configs.cubeType });
       },
     },

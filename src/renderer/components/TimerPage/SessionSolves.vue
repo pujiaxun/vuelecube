@@ -58,7 +58,7 @@
         });
       },
       archiveSessionHandler(e) {
-        e.target.blur();
+        e && e.target.blur();
         this.$electron.remote.dialog.showMessageBox({
           type: 'question',
           message: 'Do you want to archive current session?',
@@ -70,7 +70,7 @@
         });
       },
       clearSessionHandler(e) {
-        e.target.blur();
+        e && e.target.blur();
         this.$electron.remote.dialog.showMessageBox({
           type: 'question',
           message: 'Are you sure to empty current session?',
@@ -93,12 +93,12 @@
     watch: {
       solves() {
         const {
-          maxSolvesCount,
+          maxSessionSolves,
           autoArchiveSessionThreshold,
           needAutoArchiveHint,
         } = this.configs;
 
-        if (this.solves.length >= maxSolvesCount) {
+        if (this.solves.length >= maxSessionSolves) {
           this.archivedWithNotice("Max Limit");
         } else if (this.solves.length === autoArchiveSessionThreshold) {
           if (needAutoArchiveHint) {
