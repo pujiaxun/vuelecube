@@ -22,16 +22,13 @@
     name: "timer-page",
     components: { StopWatch, SessionStats, SessionSolves, SessionSettings },
     computed: mapGetters({
-      solves: 'allSolves',
       configs: 'allConfigs',
     }),
     created() {
-      this.getCurrentSolves();
       this.getConfigs();
     },
     methods: {
       ...mapActions([
-        'getCurrentSolves',
         'getConfigs',
       ]),
     },

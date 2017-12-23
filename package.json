@@ -1,6 +1,6 @@
 {
   "name": "vuelecube",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "pujiaxun <pujiaxun@gmail.com>",
   "description": "A timer for Rubik's cube based on electron-vue",
   "license": "GPL-3.0",

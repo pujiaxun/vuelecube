@@ -57,6 +57,7 @@
               pop: false,
               dnf: false,
               scramble: needScramble ? this.scramble : '',
+              cubeType,
             });
             this.updateScramble({ cubeType });
           }

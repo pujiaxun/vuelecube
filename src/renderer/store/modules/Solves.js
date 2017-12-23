@@ -5,6 +5,7 @@
  * ms: {Number} milliseconds cost of this solve
  * dnf: {Boolean} did not finish
  * pop: {Boolean} pop out
+ * cube_type: {String} cube type of this solve
  * created_at: {Date} when the solve has done
  */
 
@@ -35,20 +36,21 @@ const SOLVES_TABLE_NAME = 'solves';
 const SESSIONS_TABLE_NAME = 'sessions';
 
 const actions = {
-  getCurrentSolves({ commit }) {
-    db.find({ table: SOLVES_TABLE_NAME })
+  getCurrentSolves({ commit }, { cubeType }) {
+    db.find({ table: SOLVES_TABLE_NAME, cube_type: cubeType })
       .sort({ created_at: 1 })
       .exec((__, solves) => {
         commit('SET_CURRENT_SOLVES', { solves });
       });
   },
-  addNewSolve({ commit }, { ms, dnf, pop, scramble }) {
+  addNewSolve({ commit }, { ms, dnf, pop, scramble, cubeType }) {
     db.insert({
       table: SOLVES_TABLE_NAME,
       ms,
       dnf,
       pop,
       scramble,
+      cube_type: cubeType,
       created_at: new Date(),
     }, (err, solve) => {
       commit('ADD_NEW_SOLVE', { solve });
@@ -67,7 +69,10 @@ const actions = {
       cube_type: cubeType,
       created_at: new Date(),
     }, () => {
-      db.remove({ table: SOLVES_TABLE_NAME }, { multi: true }, () => {
+      db.remove({
+        table: SOLVES_TABLE_NAME,
+        cube_type: cubeType,
+      }, { multi: true }, () => {
         commit('CLEAR_SOLVES');
       });
     });

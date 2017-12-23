@@ -2,8 +2,8 @@
   <div class="settings-wrapper">
     <h4>SessionSettings</h4>
     <Select :value="configs.cubeType" @on-change="typeSelectorHandler">
-      <Option v-for="t in cubeTypes" :value="t" :key="t">
-        {{ cubeTypesMap[t] }}
+      <Option v-for="t in CUBE_TYPES" :value="t" :key="t">
+        {{ CUBE_TYPES_MAP[t] }}
       </Option>
     </Select>
     <i-switch
@@ -26,8 +26,8 @@
     name: 'session-settings',
     data() {
       return {
-        cubeTypes: CUBE_TYPES,
-        cubeTypesMap: CUBE_TYPES_MAP,
+        CUBE_TYPES,
+        CUBE_TYPES_MAP,
       };
     },
     computed: mapGetters({
@@ -38,10 +38,11 @@
       ...mapActions([
         'updateScramble',
         'updateConfig',
+        'getCurrentSolves',
       ]),
       typeSelectorHandler(cubeType) {
-        // TODO: confirm session
         this.updateConfig({ name: 'cubeType', value: cubeType });
+        this.getCurrentSolves({ cubeType });
         this.updateScramble({ cubeType });
       },
       scrambleSwitcherHandler(needScramble) {
