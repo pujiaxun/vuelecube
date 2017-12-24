@@ -18,10 +18,21 @@
           </Button>
         </ButtonGroup>
       </div>
-      <ul>
-        <li v-for="solve in solves" :key="solve._id">
-          {{ solve.ms | ms2second }}
-          <span @click="deleteSolveHandler(solve._id)">X</span>
+      <ul class="solves-list">
+        <!-- TODO: reversed order -->
+        <li v-for="(solve, index) in solves" :key="solve._id">
+          <Row class="solve-row">
+            <i-col span="4" class="solve-order">{{ index + 1 }}.</i-col>
+            <i-col span="12" class="solve-ms">{{ solve.ms | ms2second }}</i-col>
+            <i-col span="4" class="solve-edit"
+              @click.native="editSolveHandler(solve._id)">
+              <Icon type="edit"></Icon>
+            </i-col>
+            <i-col span="4" class="solve-rm"
+              @click.native="deleteSolveHandler(solve._id)">
+              <Icon type="close-round"></Icon>
+            </i-col>
+          </Row>
         </li>
       </ul>
     </Card>
@@ -46,6 +57,10 @@
         'archiveSession',
         'clearSession',
       ]),
+      editSolveHandler(_id) {
+        // TODO: implement
+        console.log(_id);
+      },
       deleteSolveHandler(_id) {
         this.$electron.remote.dialog.showMessageBox({
           type: 'question',
@@ -116,7 +131,42 @@
 </script>
 
 <style lang='scss' scoped>
+  $shallow-white: rgba(128, 128, 128, 0.3);
+
+  .solve-wrapper {
+    user-select: none;
+  }
+
   .buttons-container {
     text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $shallow-white;
+  }
+
+  .solves-list {
+    // TODO: supalashi trasition
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .solve-row {
+    padding: 5px 0;
+    line-height: 1;
+    font-size: 14px;
+    border-radius: 2px;
+    border-bottom: 1px dashed $shallow-white;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $shallow-white;
+    }
+
+    .solve-ms {
+    }
+
+    .solve-edit, .solve-rm {
+      text-align: center;
+      cursor: pointer;
+    }
   }
 </style>

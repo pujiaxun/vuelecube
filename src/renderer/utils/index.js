@@ -27,6 +27,7 @@ const pb = (solves) => {
   return Math.min(...solves.map(solve => solve.ms));
 };
 
+// TODO: 1h21'23.33"
 const ms2second = ms => (ms / 1000).toFixed(2);
 
 export default {
