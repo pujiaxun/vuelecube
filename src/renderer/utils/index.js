@@ -1,5 +1,5 @@
 // TODO: separate functions to different files.
-// TODO: redesign algorithm with the importing of dnf and pop
+// TODO: redesign algorithm with the importing of dnf and plus2
 
 const mean = (solves) => {
   if (solves.length === 0) {

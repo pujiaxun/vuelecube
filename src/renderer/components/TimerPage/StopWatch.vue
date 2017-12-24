@@ -54,7 +54,7 @@
             this.timingStatus = 'READY';
             this.addNewSolve({
               ms: this.ms,
-              pop: false,
+              plus2: false,
               dnf: false,
               scramble: needScramble ? this.scramble : '',
               cubeType,

@@ -4,7 +4,7 @@
  * table: {String} database table name
  * ms: {Number} milliseconds cost of this solve
  * dnf: {Boolean} did not finish
- * pop: {Boolean} pop out
+ * plus2: {Boolean} plus 2s
  * cube_type: {String} cube type of this solve
  * created_at: {Date} when the solve has done
  */
@@ -24,7 +24,6 @@ const mutations = {
     state.solves = solves;
   },
   REMOVE_SOLVE(state, { _id }) {
-    /* eslint-disable no-underscore-dangle */
     state.solves = state.solves.filter(s => s._id !== _id);
   },
   CLEAR_SOLVES(state) {
@@ -43,12 +42,12 @@ const actions = {
         commit('SET_CURRENT_SOLVES', { solves });
       });
   },
-  addNewSolve({ commit }, { ms, dnf, pop, scramble, cubeType }) {
+  addNewSolve({ commit }, { ms, dnf, plus2, scramble, cubeType }) {
     db.insert({
       table: SOLVES_TABLE_NAME,
       ms,
       dnf,
-      pop,
+      plus2,
       scramble,
       cube_type: cubeType,
       created_at: new Date(),
@@ -62,7 +61,8 @@ const actions = {
     });
   },
   archiveSession({ commit, state }, { cubeType }) {
-    const solves = state.solves.map(({ ms, dnf, pop }) => ({ ms, dnf, pop }));
+    const solves = state.solves.map(
+      ({ _id, table, cube_type, ...target }) => target);
     db.insert({
       table: SESSIONS_TABLE_NAME,
       solves,
