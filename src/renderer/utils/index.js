@@ -22,10 +22,10 @@ const mean = (solves) => {
 
 const stdDev = (solves) => {
   const times = solvesFilter(solves);
-  if (times.length === 0) return 0;
+  if (times.length <= 1) return 0;
   const meanOfSolves = mean(solves);
   const devSum = times.reduce((a, b) => a + ((b - meanOfSolves) ** 2), 0);
-  return Math.sqrt(devSum / times.length);
+  return Math.sqrt(devSum / (times.length - 1));
 };
 
 const avg = (solves) => {
