@@ -23,7 +23,7 @@
         <li v-for="(solve, index) in solves" :key="solve._id">
           <Row class="solve-row">
             <i-col span="4" class="solve-order">{{ index + 1 }}.</i-col>
-            <i-col span="12" class="solve-ms">{{ solve.ms | ms2second }}</i-col>
+            <i-col span="12" class="solve-ms">{{ solve.ms | ms2time }}</i-col>
             <i-col span="4" class="solve-edit"
               @click.native="editSolveHandler(solve._id)">
               <Icon type="edit"></Icon>
@@ -125,7 +125,7 @@
       },
     },
     filters: {
-      ms2second: utils.ms2second,
+      ms2time: utils.ms2time,
     },
   };
 </script>

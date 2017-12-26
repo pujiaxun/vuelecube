@@ -1,9 +1,9 @@
 <template>
   <div class="stats-wrapper">
     <h4>SessionStats</h4>
-    <p>PB(personal best): {{pb | ms2second}}</p>
-    <p>MEAN(mean of solves): {{mean | ms2second}}</p>
-    <p>AVG(except the best and worst): {{avg | ms2second}}</p>
+    <p>PB(personal best): {{pb | ms2time}}</p>
+    <p>MEAN(mean of solves): {{mean | ms2time}}(std = {{ stdDev | ms2time }})</p>
+    <p>AVG(except the best and worst): {{avg | ms2time}}</p>
   </div>
 </template>
 
@@ -18,7 +18,7 @@
         solves: 'allSolves',
       }),
       pb() {
-        return utils.pb(this.solves);
+        return utils.bestTime(this.solves);
       },
       mean() {
         return utils.mean(this.solves);
@@ -26,9 +26,12 @@
       avg() {
         return utils.avg(this.solves);
       },
+      stdDev() {
+        return utils.stdDev(this.solves);
+      },
     },
     filters: {
-      ms2second: utils.ms2second,
+      ms2time: utils.ms2time,
     },
   };
 </script>
