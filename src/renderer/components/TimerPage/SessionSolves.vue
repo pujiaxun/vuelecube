@@ -14,14 +14,15 @@
             @click='clearSessionHandler') Reset
 
       ul.solves-list
-        li(v-for='(solve, index) in solves' :key='solve._id')
-          Row.solve-row
-            i-col.solve-order(span='4') {{ index + 1 }}.
-            i-col.solve-ms(span='12') {{ solve.ms | ms2time }}
-            i-col.solve-edit(span='4' @click.native='editSolveHandler(solve._id)')
-              Icon(type='edit')
-            i-col.solve-rm(span='4' @click.native='deleteSolveHandler(solve._id)')
-              Icon(type='close-round')
+        transition-group(name='list' tag='div')
+          li(v-for='(solve, index) in solves' :key='solve._id')
+            Row.solve-row
+              i-col.solve-order(span='4') {{ index + 1 }}.
+              i-col.solve-ms(span='12' :title='solve.scramble') {{ solve.ms | ms2time }}
+              i-col.solve-edit(span='4' @click.native='editSolveHandler(solve._id)')
+                Icon(type='edit')
+              i-col.solve-rm(span='4' @click.native='deleteSolveHandler(solve._id)')
+                Icon(type='close-round')
 </template>
 
 <script>
@@ -135,7 +136,7 @@
   }
 
   .solve-row {
-    padding: 5px 0;
+    padding: 5px;
     line-height: 1;
     font-size: 14px;
     border-radius: 2px;
@@ -153,5 +154,14 @@
       text-align: center;
       cursor: pointer;
     }
+  }
+
+  .list-enter-active, .list-leave-active {
+    transition: all 1s;
+  }
+
+  .list-enter, .list-leave-to {
+    opacity: 0;
+    transform: translateX(90%);
   }
 </style>
