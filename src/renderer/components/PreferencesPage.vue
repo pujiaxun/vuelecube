@@ -1,8 +1,7 @@
-<template>
-  <div class="pref-wrapper">
-    <about-me />
-    <prefs-list />
-  </div>
+<template lang="pug">
+  .pref-wrapper
+    about-me
+    prefs-list
 </template>
 
 <script>

@@ -1,7 +1,5 @@
-<template>
-  <div class="about-wrapper">
-    about
-  </div>
+<template lang="pug">
+  .about-wrapper about
 </template>
 
 <script>

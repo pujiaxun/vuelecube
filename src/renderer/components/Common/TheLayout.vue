@@ -1,12 +1,9 @@
-<template>
-  <div class="layout" :class="configs.themeStyle + '-theme-layout'">
-    <the-side-menu />
-    <div class="layout-content">
-      <transition name="fade" mode="out-in">
-        <router-view></router-view>
-      </transition>
-    </div>
-  </div>
+<template lang="pug">
+  .layout(:class='configs.themeStyle + "-theme-layout"')
+    the-side-menu
+    .layout-content
+      transition(name='fade' mode='out-in')
+        router-view
 </template>
 
 <script>

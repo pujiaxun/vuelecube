@@ -1,27 +1,17 @@
-<template>
-  <div class="settings-wrapper">
-    <h4>SessionSettings</h4>
-    <Select :value="configs.cubeType" @on-change="typeSelectorHandler">
-      <Option v-for="t in CUBE_TYPES" :value="t" :key="t">
-        {{ CUBE_TYPES_MAP[t] }}
-      </Option>
-    </Select>
+<template lang="pug">
+  .settings-wrapper
+    Select(:value='configs.cubeType' @on-change='typeSelectorHandler')
+      Option(v-for='t in CUBE_TYPES' :value='t' :key='t') {{ CUBE_TYPES_MAP[t] }}
 
-    <i-switch
-      size="large"
-      :value="configs.needScramble"
-      @on-change="scrambleSwitcherHandler">
-        <span slot="open">ON</span>
-        <span slot="close">OFF</span>
-    </i-switch>
+    i-switch(size='large' :value='configs.needScramble'
+      @on-change='scrambleSwitcherHandler')
+      span(slot='open') ON
+      span(slot='close') OFF
 
-    <Button
-      type="primary" v-show="configs.needScramble" @click="scrambleIt"
-    >
-      Scramble
-    </Button>
-    <p v-show="configs.needScramble">{{scramble}}</p>
-  </div>
+    Button(type='primary' v-show='configs.needScramble' @click='scrambleIt')
+      | Scramble
+
+    p(v-show='configs.needScramble') {{ scramble }}
 </template>
 
 <script>

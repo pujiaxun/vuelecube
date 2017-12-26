@@ -1,9 +1,7 @@
-<template>
-  <div class="watch-wrapper">
-    <h4>Timer</h4>
-    timingStatus: {{timingStatus}}
-    ms: {{ms}}
-  </div>
+<template lang="pug">
+  .watch-wrapper
+    p Timing Status: {{ timingStatus }}
+    p ms: {{ ms }}
 </template>
 
 <script>

@@ -1,42 +1,27 @@
-<template>
-  <div class="solve-wrapper">
-    <Card>
-      <p slot="title">
-        <Icon type="ribbon-b"></Icon>
-        Current Session
-      </p>
-      <div class="buttons-container">
-        <ButtonGroup shape="circle">
-          <Button :disabled="solves.length < 3"
-            type="primary"
-            @click="archiveSessionHandler"
-          >
-            Archive
-          </Button>
-          <Button :disabled="solves.length === 0" @click="clearSessionHandler">
-            Reset
-          </Button>
-        </ButtonGroup>
-      </div>
-      <ul class="solves-list">
-        <!-- TODO: reversed order -->
-        <li v-for="(solve, index) in solves" :key="solve._id">
-          <Row class="solve-row">
-            <i-col span="4" class="solve-order">{{ index + 1 }}.</i-col>
-            <i-col span="12" class="solve-ms">{{ solve.ms | ms2time }}</i-col>
-            <i-col span="4" class="solve-edit"
-              @click.native="editSolveHandler(solve._id)">
-              <Icon type="edit"></Icon>
-            </i-col>
-            <i-col span="4" class="solve-rm"
-              @click.native="deleteSolveHandler(solve._id)">
-              <Icon type="close-round"></Icon>
-            </i-col>
-          </Row>
-        </li>
-      </ul>
-    </Card>
-  </div>
+<template lang="pug">
+  .solve-wrapper
+    Card
+      p(slot='title')
+        Icon(type='ribbon-b')
+        | Current Session
+
+      .buttons-container
+        ButtonGroup(shape='circle')
+          Button(:disabled='solves.length < 3'
+            type='primary'
+            @click='archiveSessionHandler') Archive
+          Button(:disabled='solves.length === 0'
+            @click='clearSessionHandler') Reset
+
+      ul.solves-list
+        li(v-for='(solve, index) in solves' :key='solve._id')
+          Row.solve-row
+            i-col.solve-order(span='4') {{ index + 1 }}.
+            i-col.solve-ms(span='12') {{ solve.ms | ms2time }}
+            i-col.solve-edit(span='4' @click.native='editSolveHandler(solve._id)')
+              Icon(type='edit')
+            i-col.solve-rm(span='4' @click.native='deleteSolveHandler(solve._id)')
+              Icon(type='close-round')
 </template>
 
 <script>

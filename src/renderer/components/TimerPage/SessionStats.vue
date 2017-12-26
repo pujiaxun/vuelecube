@@ -1,10 +1,8 @@
-<template>
-  <div class="stats-wrapper">
-    <h4>SessionStats</h4>
-    <p>PB(personal best): {{pb | ms2time}}</p>
-    <p>MEAN(mean of solves): {{mean | ms2time}}(std = {{ stdDev | ms2time }})</p>
-    <p>AVG(except the best and worst): {{avg | ms2time}}</p>
-  </div>
+<template lang="pug">
+  .stats-wrapper
+    p PB: {{ pb | ms2time }}
+    p MEAN: {{ mean | ms2time }}(std = {{ stdDev | ms2time }})
+    p AVG:{{ avg | ms2time }}
 </template>
 
 <script>

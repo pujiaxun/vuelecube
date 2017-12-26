@@ -1,14 +1,11 @@
-<template>
-  <div class="timer-wrapper">
-    <div class="left-wrapper">
-      <session-settings />
-      <stop-watch />
-      <session-stats/>
-    </div>
-    <div class="right-wrapper">
-      <session-solves />
-    </div>
-  </div>
+<template lang="pug">
+  .timer-wrapper
+    .left-wrapper
+      session-settings
+      stop-watch
+      session-stats
+    .right-wrapper
+      session-solves
 </template>
 
 <script>

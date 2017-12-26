@@ -1,7 +1,6 @@
-<template>
-  <div class="wrapper">
-    <h1>Tutorial</h1>
-  </div>
+<template lang="pug">
+  .wrapper
+    h1 Tutorial
 </template>
 
 <script>

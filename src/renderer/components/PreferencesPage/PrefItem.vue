@@ -1,8 +1,8 @@
-<template>
-  <Row class="pref-item-row">
-    <i-col span="12" class="pref-label">{{ label }}</i-col>
-    <i-col span="12" class="pref-content"><slot name="content"></slot></i-col>
-  </Row>
+<template lang="pug">
+  Row.pref-item-row
+    i-col.pref-label(span='12') {{ label }}
+    i-col.pref-content(span='12')
+      slot(name='content')
 </template>
 
 <script>
