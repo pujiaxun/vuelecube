@@ -44,8 +44,7 @@
       scrambleSwitcherHandler(needScramble) {
         this.updateConfig({ name: 'needScramble', value: needScramble });
       },
-      scrambleIt(e) {
-        e && e.target.blur();
+      scrambleIt() {
         this.updateScramble({ cubeType: this.configs.cubeType });
       },
     },

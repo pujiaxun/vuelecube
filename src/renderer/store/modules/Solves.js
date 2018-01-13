@@ -29,6 +29,10 @@ const mutations = {
   CLEAR_SOLVES(state) {
     state.solves = [];
   },
+  UPDATE_SOLVE(state, { _id, newAttrs }) {
+    const targetSolve = state.solves.find(solve => solve._id === _id);
+    Object.assign(targetSolve, newAttrs);
+  },
 };
 
 const SOLVES_TABLE_NAME = 'solves';
@@ -58,6 +62,11 @@ const actions = {
   deleteSolve({ commit }, { _id }) {
     db.remove({ _id }, () => {
       commit('REMOVE_SOLVE', { _id });
+    });
+  },
+  updateSolve({ commit }, { _id, newAttrs }) {
+    db.update({ _id }, { $set: newAttrs }, () => {
+      commit('UPDATE_SOLVE', { _id, newAttrs });
     });
   },
   archiveSession({ commit, state }, { cubeType }) {

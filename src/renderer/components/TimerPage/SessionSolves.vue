@@ -18,7 +18,8 @@
           li(v-for='(solve, index) in solves' :key='solve._id')
             Row.solve-row
               i-col.solve-order(span='4') {{ index + 1 }}.
-              i-col.solve-ms(span='12' :title='solve.scramble') {{ solve.ms | ms2time }}
+              i-col.solve-ms(span='12' :title='solve.scramble')
+                | {{ solve | solveDisplay }}
               i-col.solve-edit(span='4' @click.native='editSolveHandler(solve._id)')
                 Icon(type='edit')
               i-col.solve-rm(span='4' @click.native='deleteSolveHandler(solve._id)')
@@ -58,8 +59,7 @@
           }
         });
       },
-      archiveSessionHandler(e) {
-        e && e.target.blur();
+      archiveSessionHandler() {
         this.$electron.remote.dialog.showMessageBox({
           type: 'question',
           message: 'Do you want to archive current session?',
@@ -70,8 +70,7 @@
           }
         });
       },
-      clearSessionHandler(e) {
-        e && e.target.blur();
+      clearSessionHandler() {
         this.$electron.remote.dialog.showMessageBox({
           type: 'question',
           message: 'Are you sure to empty current session?',
@@ -111,7 +110,15 @@
       },
     },
     filters: {
-      ms2time: utils.ms2time,
+      solveDisplay(solve) {
+        let ms = solve.ms;
+        if (solve.dnf) {
+          return 'DNF';
+        } else if (solve.plus2) {
+          ms += 2000;
+        }
+        return utils.ms2time(ms);
+      },
     },
   };
 </script>

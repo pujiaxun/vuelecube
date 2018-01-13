@@ -2,6 +2,13 @@
   .watch-wrapper
     p Timing Status: {{ timingStatus }}
     p ms: {{ ms }}
+    RadioGroup(v-show='solves.length'
+      type='button'
+      v-model='lastestSolveStatus'
+      @on-change='(v) => updatePenalty(v)')
+      Radio(label='OK') OK
+      Radio(label='DNF') DNF
+      Radio(label='PLUS2') +2
 </template>
 
 <script>
@@ -13,12 +20,14 @@
     computed: mapGetters({
       scramble: 'currentScramble',
       configs: 'allConfigs',
+      solves: 'allSolves',
     }),
     data() {
       return {
         timingStatus: 'READY',
         theStopwatch: new StopWatch(),
         statusTimeout: null,
+        lastestSolveStatus: 'OK',
         ms: 0,
       };
     },
@@ -33,10 +42,12 @@
       ...mapActions([
         'addNewSolve',
         'updateScramble',
+        'updateSolve',
       ]),
       keyupHandler(e) {
         // READY -> HOLDING(>=n seconds) -> FIRE -> TIMING -> READY
         // READY -> HOLDING(<n seconds) -> READY
+        e.preventDefault();
         const FIRE_KEY_CODE = this.configs.fireKeyCode;
         const { cubeType, needScramble } = this.configs;
         if (e.keyCode === FIRE_KEY_CODE) {
@@ -57,11 +68,13 @@
               scramble: needScramble ? this.scramble : '',
               cubeType,
             });
+            this.lastestSolveStatus = 'OK';
             this.updateScramble({ cubeType });
           }
         }
       },
       keydownHandler(e) {
+        e.preventDefault();
         const HOLDING_TO_FIRE = this.configs.startDelay;
         const FIRE_KEY_CODE = this.configs.fireKeyCode;
         if (e.keyCode === FIRE_KEY_CODE && this.timingStatus === 'READY') {
@@ -71,8 +84,21 @@
           }, HOLDING_TO_FIRE);
         }
       },
+      updatePenalty(status) {
+        const count = this.solves.length;
+        const lastestSolve = count ? this.solves[count - 1] : null;
+        this.lastestSolveStatus = status;
+        if (lastestSolve) {
+          const newAttrs = {
+            dnf: status === 'DNF',
+            plus2: status === 'PLUS2',
+          };
+          this.updateSolve({ _id: lastestSolve._id, newAttrs });
+        }
+      },
     },
     beforeDestroy() {
+      // TODO: watch a STATUS to add/remove keyup/down event listeners
       window.removeEventListener('keydown', this.keydownHandler);
       window.removeEventListener('keyup', this.keyupHandler);
     },
