@@ -2,6 +2,11 @@
 
 [阅读中文版](./CHANGELOG_zh-CN.md)
 
+## 0.1.2
+
+1. Support to edit the lastest solve.
+1. Fix the default actions when pressing the spacebar, likely.
+
 ## 0.1.1
 
 1. Support auto archive session.
