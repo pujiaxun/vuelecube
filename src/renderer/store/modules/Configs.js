@@ -14,9 +14,11 @@ const state = {
 };
 
 const mutations = {
+
   SET_CONFIGS(state, { configs }) {
     state.configs = configs;
   },
+
   UPDATE_CONFIG(state, { name, value }) {
     state.configs[name] = value;
   },
@@ -25,31 +27,30 @@ const mutations = {
 const CONFIGS_TABLE_NAME = 'configs';
 
 const actions = {
-  getConfigs({ commit }) {
-    db.find({
-      table: CONFIGS_TABLE_NAME,
-    }, (_, configObjects) => {
-      const customedConfigs = {};
-      configObjects.forEach(({ name, value }) => {
-        customedConfigs[name] = value;
-      });
+  async getConfigs({ commit }) {
+    const configObjects = await db.find({ table: CONFIGS_TABLE_NAME });
 
-      // combine customed configs with default ones
-      const configs = Object.assign({}, DEFAULT_CONFIGS, customedConfigs);
-      commit('SET_CONFIGS', { configs });
+    const customedConfigs = {};
+    configObjects.forEach(({ name, value }) => {
+      customedConfigs[name] = value;
     });
+
+    // combine customed configs with default ones
+    const configs = Object.assign({}, DEFAULT_CONFIGS, customedConfigs);
+    commit('SET_CONFIGS', { configs });
   },
-  updateConfig({ commit }, { name, value }) {
-    db.update({
+
+  async updateConfig({ commit }, { name, value }) {
+    await db.update({
       table: CONFIGS_TABLE_NAME,
       name,
     }, {
       table: CONFIGS_TABLE_NAME,
       name,
       value,
-    }, { upsert: true }, () => {
-      commit('UPDATE_CONFIG', { name, value });
-    });
+    }, { upsert: true });
+
+    commit('UPDATE_CONFIG', { name, value });
   },
 };
 

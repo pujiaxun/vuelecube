@@ -81,9 +81,9 @@
           }
         });
       },
-      archivedWithNotice(title) {
-        this.archiveSession({ cubeType: this.configs.cubeType });
-        // FIXME: async with the dispatched action
+      async archivedWithNotice(title) {
+        await this.archiveSession({ cubeType: this.configs.cubeType });
+
         this.$Notice.info({
           title,
           desc: 'The current session has been archived.',

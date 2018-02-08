@@ -57,6 +57,7 @@
     "axios": "^0.16.1",
     "iview": "^2.7.4",
     "nedb": "^1.8.0",
+    "nedb-promise": "^2.0.1",
     "pug": "^2.0.0-rc.4",
     "scrambo": "^0.3.0",
     "timer-stopwatch": "^0.2.0",

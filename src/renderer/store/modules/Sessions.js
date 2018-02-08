@@ -22,12 +22,9 @@ const mutations = {
 const SESSIONS_TABLE_NAME = 'sessions';
 
 const actions = {
-  getSessions({ commit }) {
-    db.find({ table: SESSIONS_TABLE_NAME })
-      .sort({ created_at: 1 })
-      .exec((__, sessions) => {
-        commit('SET_SESSIONS', { sessions });
-      });
+  async getSessions({ commit }) {
+    const sessions = await db.cfind({ table: SESSIONS_TABLE_NAME }).sort({ created_at: 1 }).exec();
+    commit('SET_SESSIONS', { sessions });
   },
 };
 

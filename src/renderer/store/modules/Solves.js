@@ -20,15 +20,19 @@ const mutations = {
   ADD_NEW_SOLVE(state, { solve }) {
     state.solves.push(solve);
   },
+
   SET_CURRENT_SOLVES(state, { solves }) {
     state.solves = solves;
   },
+
   REMOVE_SOLVE(state, { _id }) {
     state.solves = state.solves.filter(s => s._id !== _id);
   },
+
   CLEAR_SOLVES(state) {
     state.solves = [];
   },
+
   UPDATE_SOLVE(state, { _id, newAttrs }) {
     const targetSolve = state.solves.find(solve => solve._id === _id);
     Object.assign(targetSolve, newAttrs);
@@ -39,15 +43,17 @@ const SOLVES_TABLE_NAME = 'solves';
 const SESSIONS_TABLE_NAME = 'sessions';
 
 const actions = {
-  getCurrentSolves({ commit }, { cubeType }) {
-    db.find({ table: SOLVES_TABLE_NAME, cube_type: cubeType })
-      .sort({ created_at: 1 })
-      .exec((__, solves) => {
-        commit('SET_CURRENT_SOLVES', { solves });
-      });
+  async getCurrentSolves({ commit }, { cubeType }) {
+    const solves = await db.cfind({
+      table: SOLVES_TABLE_NAME,
+      cube_type: cubeType },
+    ).sort({ created_at: 1 }).exec();
+
+    commit('SET_CURRENT_SOLVES', { solves });
   },
-  addNewSolve({ commit }, { ms, dnf, plus2, scramble, cubeType }) {
-    db.insert({
+
+  async addNewSolve({ commit }, { ms, dnf, plus2, scramble, cubeType }) {
+    const solve = await db.insert({
       table: SOLVES_TABLE_NAME,
       ms,
       dnf,
@@ -55,44 +61,45 @@ const actions = {
       scramble,
       cube_type: cubeType,
       created_at: new Date(),
-    }, (err, solve) => {
-      commit('ADD_NEW_SOLVE', { solve });
     });
+    commit('ADD_NEW_SOLVE', { solve });
   },
-  deleteSolve({ commit }, { _id }) {
-    db.remove({ _id }, () => {
-      commit('REMOVE_SOLVE', { _id });
-    });
+
+  async deleteSolve({ commit }, { _id }) {
+    await db.remove({ _id });
+    commit('REMOVE_SOLVE', { _id });
   },
-  updateSolve({ commit }, { _id, newAttrs }) {
-    db.update({ _id }, { $set: newAttrs }, () => {
-      commit('UPDATE_SOLVE', { _id, newAttrs });
-    });
+
+  async updateSolve({ commit }, { _id, newAttrs }) {
+    await db.update({ _id }, { $set: newAttrs });
+    commit('UPDATE_SOLVE', { _id, newAttrs });
   },
-  archiveSession({ commit, state }, { cubeType }) {
+
+  async archiveSession({ commit, state }, { cubeType }) {
     const solves = state.solves.map(
       ({ _id, table, cube_type, ...target }) => target);
-    db.insert({
+    await db.insert({
       table: SESSIONS_TABLE_NAME,
       solves,
       cube_type: cubeType,
       created_at: new Date(),
-    }, () => {
-      db.remove({
-        table: SOLVES_TABLE_NAME,
-        cube_type: cubeType,
-      }, { multi: true }, () => {
-        commit('CLEAR_SOLVES');
-      });
     });
-  },
-  clearSession({ commit }, { cubeType }) {
-    db.remove({
+
+    await db.remove({
       table: SOLVES_TABLE_NAME,
       cube_type: cubeType,
-    }, { multi: true }, () => {
-      commit('CLEAR_SOLVES');
-    });
+    }, { multi: true });
+
+    commit('CLEAR_SOLVES');
+  },
+
+  async clearSession({ commit }, { cubeType }) {
+    await db.remove({
+      table: SOLVES_TABLE_NAME,
+      cube_type: cubeType,
+    }, { multi: true });
+
+    commit('CLEAR_SOLVES');
   },
 };
 
